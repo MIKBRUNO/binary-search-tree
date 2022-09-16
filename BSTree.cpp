@@ -7,6 +7,7 @@ namespace BinSearchTree {
 		link[0] = nullptr;
 		link[1] = nullptr;
 		height = 1;
+
 	}
 
 	BSTree::Node::~Node() {
