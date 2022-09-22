@@ -17,8 +17,8 @@ using BinSearchTree::BSTree;
 
 int main() {
 	BSTree tree(0);
-	BSTree::iterator iter1 = tree.getBegin();
-	BSTree::iterator iter3 = tree.getBegin();
+	BSTree::iterator iter1 = tree.begin();
+	BSTree::iterator iter3 = tree.begin();
 	tree.insert(-3);
 	tree.insert(-5);
 	tree.insert(-1);
@@ -29,25 +29,27 @@ int main() {
 	tree.insert(4);
 	tree.insert(3);
 	tree.insert(5);
+	BSTree::iterator begin = tree.begin();
+	BSTree::iterator end = tree.end();
 
-	BSTree::iterator iter2 = tree.getBegin();
+	BSTree::iterator iter2 = tree.begin();
 	cout << *iter2 << ' ';
-	while (!iter2.isLast()) {
+	while (iter2 != end) {
 		iter2++;
 		cout << *iter2 << ' ';
 	}
 	cout << '\n' << *iter1 << ' ';
-	while (!iter1.isLast()) {
+	while (iter1 != end) {
 		iter1++;
 		cout << *iter1 << ' ';
 	}
 	cout << '\n' << *iter3 << ' ';
-	while (!iter3.isFirst()) {
+	while (iter3 != begin) {
 		iter3--;
 		cout << *iter3 << ' ';
 	}
 	cout << '\n' << *iter2 << ' ';
-	while (!iter2.isFirst()) {
+	while (iter2 != begin) {
 		iter2--;
 		cout << *iter2 << ' ';
 	}

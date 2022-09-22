@@ -9,7 +9,8 @@ namespace BinSearchTree {
 
 		BSTree(int);
 		~BSTree();
-		iterator getBegin();
+		iterator begin();
+		iterator end();
 		void insert(int);
 
 		class Node {
@@ -34,11 +35,8 @@ namespace BinSearchTree {
 			int operator*();
 			bool operator==(iterator);
 			bool operator!=(iterator);
-			bool isLast() ;
-			bool isFirst();
 		private:
 			friend class BSTree;
-			iterator();
 			Node* cur;
 			Node* deepLeft(Node*);
 			Node* deepRight(Node*);
@@ -46,7 +44,6 @@ namespace BinSearchTree {
 
 	private:
 		Node* root;
-		iterator begin;
 		unsigned int height(Node*);
 		void insert(Node*, Node*);
 	};
