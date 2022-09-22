@@ -18,30 +18,47 @@ namespace BinSearchTree {
 	BSTree::iterator::iterator(BSTree& tree) {
 		cur = tree.root;
 	}
-	BSTree::iterator::~iterator() {
-
+	BSTree::iterator::iterator() {
+		cur = nullptr;
 	}
-	void BSTree::iterator::operator++() {
+	BSTree::iterator::~iterator() {}
+	BSTree::iterator BSTree::iterator::operator++(int) {
+		BSTree::iterator res = *this;
 		if (nullptr != cur->link[1])
 			cur = deepLeft(cur->link[1]);
 		else if (nullptr != cur->parent) {
 			Node* previous = cur;
-			cur = cur->parent;
-			while (nullptr != cur->parent && cur->link[1] == previous)
-				cur = cur->parent;
+			Node* upper = cur;
+			do {
+				previous = upper;
+				upper = upper->parent;
+			} while (nullptr != upper->parent && upper->link[1] == previous);
+			if (upper->link[1] != previous)
+				cur = upper;
 		}
+		return res;
 	}
-	void BSTree::iterator::operator--() {
+#if 0
+	BSTree::iterator BSTree::iterator::operator--(int) {
 		if (nullptr != cur->link[0])
 			cur = deepRight(cur->link[0]);
 		else while (nullptr != cur->parent && cur->parent->link[0] != cur)
 			cur = cur->parent;
 	}
-	BSTree::Node& BSTree::iterator::operator*() const {
-		return *cur;
+#endif
+	int BSTree::iterator::operator*() {
+		return cur->value;
+	}
+	bool BSTree::iterator::operator==(iterator other) {
+		return this->cur == other.cur;
+	}
+	bool BSTree::iterator::operator!=(iterator other) {
+		return this->cur == other.cur;
 	}
 	bool BSTree::iterator::isLast() {
-		return (nullptr == cur->link[1]) && (nullptr == cur->parent);
+		iterator prev = *this;
+		prev++;
+		return prev == *this;
 	}
 	bool BSTree::iterator::isFirst() {
 		return (nullptr == cur->link[0]) && (nullptr == cur->parent);

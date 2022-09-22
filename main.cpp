@@ -29,18 +29,17 @@ int main() {
 	tree.insert(3);
 	tree.insert(5);
 
-	BSTree::iterator* iter2 = new BSTree::iterator(tree.getBegin());
-	while (!iter2->isLast()) {
-		cout << (*(*iter2)).value;
-		++(*iter2);
+	BSTree::iterator iter2 = tree.getBegin();
+	cout << *iter2 << ' ';
+	while (!iter2.isLast()) {
+		iter2++;
+		cout << *iter2 << ' ';
 	}
-	while (!iter1->isLast()) {
-		++(*iter1);
-		cout << (*(*iter1)).value;
+	cout << '\n' << *iter1 << ' ';
+	while (!iter1.isLast()) {
+		iter1++;
+		cout << *iter1 << ' ';
 	}
-
-	delete iter1;
-	delete iter2;
 	
 	return 0;
 }

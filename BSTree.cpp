@@ -20,22 +20,21 @@ namespace BinSearchTree {
 
 	BSTree::BSTree(int value) {
 		root = new Node(value);
-		begin = new iterator(*this);
+		begin = iterator((*this));
 	}
 
 	BSTree::~BSTree() {
 		delete root;
-		delete begin;
 	}
 
-	const BSTree::iterator& BSTree::getBegin() {
-		return *begin;
+	BSTree::iterator BSTree::getBegin() {
+		return begin;
 	}
 
 	void BSTree::insert(int nwValue) {
 		Node* elem = new Node(nwValue);
 		insert(elem, this->root);
-		begin->cur = begin->deepLeft(begin->cur);
+		begin.cur = begin.deepLeft(begin.cur);
 	}
 
 	unsigned int BSTree::height(Node* elem) {
