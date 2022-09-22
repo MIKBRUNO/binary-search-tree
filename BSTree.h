@@ -5,11 +5,12 @@ namespace BinSearchTree {
 
 	class BSTree {
 	public:
-		class Iterator;
+		class iterator;
 
 		BSTree(int);
 		~BSTree();
-		const Iterator& getBegin();
+		iterator begin();
+		iterator end();
 		void insert(int);
 
 		class Node {
@@ -18,36 +19,33 @@ namespace BinSearchTree {
 			Node(int);
 			~Node();
 		private:
+			friend class iterator;
 			friend class BSTree;
-			friend class Iterator;
 			Node* link[2];
+			Node* parent;
 			unsigned int height;
 		};
 
-		class Iterator {
+		class iterator {
 		public:
-			Iterator(BSTree&);
-			~Iterator();
-			void operator++();
-			void operator--();
-			Node& operator*() const;
-			bool isLast();
-			bool isFirst();
+			iterator(BSTree&);
+			~iterator();
+			iterator operator++(int);
+			iterator operator--(int);
+			int operator*();
+			bool operator==(iterator);
+			bool operator!=(iterator);
 		private:
 			friend class BSTree;
 			Node* cur;
-			std::stack<Node*>* forwardStack;
-			std::stack<Node*>* backwardStack;
 			Node* deepLeft(Node*);
 			Node* deepRight(Node*);
 		};
 
 	private:
-		friend class Iterator;
 		Node* root;
-		Iterator* begin;
 		unsigned int height(Node*);
-		void insert(Node*, Node**);
+		void insert(Node*, Node*);
 	};
 
 }

@@ -3,56 +3,61 @@
 
 namespace BinSearchTree {
 
-	BSTree::Node* BSTree::Iterator::deepLeft(BSTree::Node* from) {
+	BSTree::Node* BSTree::iterator::deepLeft(BSTree::Node* from) {
 		while (nullptr != from->link[0]) {
-			forwardStack->push(from);
 			from = from->link[0];
 		}
 		return from;
 	}
-	BSTree::Node* BSTree::Iterator::deepRight(BSTree::Node* from) {
+	BSTree::Node* BSTree::iterator::deepRight(BSTree::Node* from) {
 		while (nullptr != from->link[1]) {
 			from = from->link[1];
 		}
 		return from;
 	}
-	BSTree::Iterator::Iterator(BSTree& tree) {
+	BSTree::iterator::iterator(BSTree& tree) {
 		cur = tree.root;
-		backwardStack = new std::stack<BSTree::Node*>;
-		forwardStack = new std::stack<BSTree::Node*>;
 	}
-	BSTree::Iterator::~Iterator() {
-		delete forwardStack;
-		delete backwardStack;
-	}
-	void BSTree::Iterator::operator++() {
-		if (nullptr != cur->link[1]) {
-			backwardStack->push(cur);
+	BSTree::iterator::~iterator() {}
+	BSTree::iterator BSTree::iterator::operator++(int) {
+		BSTree::iterator res = *this;
+		if (nullptr != cur->link[1])
 			cur = deepLeft(cur->link[1]);
+		else if (nullptr != cur->parent) {
+			Node* previous = cur;
+			Node* upper = cur;
+			do {
+				previous = upper;
+				upper = upper->parent;
+			} while (nullptr != upper->parent && upper->link[1] == previous);
+			if (upper->link[1] != previous)
+				cur = upper;
 		}
-		else if (!forwardStack->empty()) {
-			cur = forwardStack->top();
-			forwardStack->pop();
-		}
+		return res;
 	}
-	void BSTree::Iterator::operator--() {
-		if (nullptr != cur->link[0]) {
-			forwardStack->push(cur);
+	BSTree::iterator BSTree::iterator::operator--(int) {
+		BSTree::iterator res = *this;
+		if (nullptr != cur->link[0])
 			cur = deepRight(cur->link[0]);
+		else if (nullptr != cur->parent) {
+			Node* previous = cur;
+			Node* upper = cur;
+			do {
+				previous = upper;
+				upper = upper->parent;
+			} while (nullptr != upper->parent && upper->link[0] == previous);
+			if (upper->link[0] != previous)
+				cur = upper;
 		}
-		else if (!backwardStack->empty()) {
-			cur = backwardStack->top();
-			backwardStack->pop();
-		}
+		return res;
 	}
-	BSTree::Node& BSTree::Iterator::operator*() const {
-		return *cur;
+	int BSTree::iterator::operator*() {
+		return cur->value;
 	}
-	bool BSTree::Iterator::isLast() {
-		return (nullptr == cur->link[1]) && (forwardStack->empty());
+	bool BSTree::iterator::operator==(iterator other) {
+		return this->cur == other.cur;
 	}
-	bool BSTree::Iterator::isFirst() {
-		return (nullptr == cur->link[0]) && (backwardStack->empty());
+	bool BSTree::iterator::operator!=(iterator other) {
+		return this->cur != other.cur;
 	}
-
 }
