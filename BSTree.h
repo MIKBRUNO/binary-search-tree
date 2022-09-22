@@ -30,9 +30,7 @@ namespace BinSearchTree {
 			iterator(BSTree&);
 			~iterator();
 			iterator operator++(int);
-#if 0
 			iterator operator--(int);
-#endif
 			int operator*();
 			bool operator==(iterator);
 			bool operator!=(iterator);
