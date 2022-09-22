@@ -6,6 +6,7 @@ namespace BinSearchTree {
 		value = val;
 		link[0] = nullptr;
 		link[1] = nullptr;
+		parent = nullptr;
 		height = 1;
 
 	}
@@ -19,7 +20,7 @@ namespace BinSearchTree {
 
 	BSTree::BSTree(int value) {
 		root = new Node(value);
-		begin = new Iterator(*this);
+		begin = new iterator(*this);
 	}
 
 	BSTree::~BSTree() {
@@ -27,13 +28,13 @@ namespace BinSearchTree {
 		delete begin;
 	}
 
-	const BSTree::Iterator& BSTree::getBegin() {
+	const BSTree::iterator& BSTree::getBegin() {
 		return *begin;
 	}
 
 	void BSTree::insert(int nwValue) {
 		Node* elem = new Node(nwValue);
-		insert(elem, &(this->root));
+		insert(elem, this->root);
 		begin->cur = begin->deepLeft(begin->cur);
 	}
 
@@ -41,17 +42,16 @@ namespace BinSearchTree {
 		return (nullptr != elem) ? elem->height : 0;
 	}
 
-	void BSTree::insert(Node* elem, Node** tree) {
-		if (nullptr == elem)
-			return;
-		if (nullptr == *tree) {
-			(*tree) = elem;
-			return;
+	void BSTree::insert(Node* elem, Node* root) {
+		unsigned int idx = (elem->value >= root->value);
+		if (nullptr == root->link[idx]) {
+			root->link[idx] = elem;
+			elem->parent = root;
 		}
-		unsigned int idx = (elem->value >= (*tree)->value);
-		insert(elem, &((*tree)->link[idx]));
-		unsigned int maxIdx = height((*tree)->link[0]) > height((*tree)->link[1]) ? 0 : 1;
-		(*tree)->height = height((*tree)->link[maxIdx]) + 1;
+		else
+			insert(elem, root->link[idx]);
+		unsigned int maxIdx = height(root->link[0]) > height(root->link[1]) ? 0 : 1;
+		root->height = height(root->link[maxIdx]) + 1;
 	}
 
 }
