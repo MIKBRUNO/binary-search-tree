@@ -16,8 +16,9 @@ using std::cout;
 using BinSearchTree::BSTree;
 
 int main() {
-	BSTree tree(0);
+	BSTree tree;
 	BSTree::iterator iter1 = tree.begin();
+	tree.insert(0);
 	BSTree::iterator iter3 = tree.begin();
 	tree.insert(-3);
 	tree.insert(-5);
@@ -30,28 +31,21 @@ int main() {
 	tree.insert(3);
 	tree.insert(5);
 	BSTree::iterator begin = tree.begin();
-	BSTree::iterator end = tree.end();
 
 	BSTree::iterator iter2 = tree.begin();
-	cout << *iter2 << ' ';
-	while (iter2 != end) {
+	while (iter2 != tree.end()) {
+		cout << *iter2 << ' ';
 		iter2++;
-		cout << *iter2 << ' ';
 	}
-	cout << '\n' << *iter1 << ' ';
-	while (iter1 != end) {
-		iter1++;
+	cout << '\n';
+	while (iter1 != tree.end()) {
 		cout << *iter1 << ' ';
+		iter1++;
 	}
-	cout << '\n' << *iter3 << ' ';
-	while (iter3 != begin) {
-		iter3--;
+	cout << '\n';
+	while (iter3 != tree.end()) {
 		cout << *iter3 << ' ';
-	}
-	cout << '\n' << *iter2 << ' ';
-	while (iter2 != begin) {
-		iter2--;
-		cout << *iter2 << ' ';
+		iter3++;
 	}
 	
 	return 0;

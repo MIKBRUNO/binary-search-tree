@@ -16,39 +16,33 @@ namespace BinSearchTree {
 		if (nullptr != link[1])
 			delete link[1];
 	}
-	BSTree::BSTree(int value) {
-		root = new Node(value);
-	}
+
 	BSTree::~BSTree() {
-		delete root;
+		if (nullptr != root)
+			delete root;
 	}
 	BSTree::iterator BSTree::begin() {
-		iterator begin(*this);
-		begin.cur = begin.deepLeft(begin.cur);
-		return begin;
+		return iterator(*this);
 	}
 	BSTree::iterator BSTree::end() {
 		iterator end(*this);
-		end.cur = end.deepRight(end.cur);
+		end.current = nullptr;
 		return end;
 	}
 	void BSTree::insert(int nwValue) {
 		Node* elem = new Node(nwValue);
-		insert(elem, this->root);
-	}
-	unsigned int BSTree::height(Node* elem) {
-		return (nullptr != elem) ? elem->height : 0;
-	}
-	void BSTree::insert(Node* elem, Node* root) {
-		unsigned int idx = (elem->value >= root->value);
-		if (nullptr == root->link[idx]) {
-			root->link[idx] = elem;
-			elem->parent = root;
+		if (nullptr == root)
+			root = elem;
+		else {
+			Node* cur = root;
+			unsigned int idx = (elem->value >= cur->value);
+			while (nullptr != cur->link[idx]) {
+				cur = cur->link[idx];
+				idx = (elem->value >= cur->value);
+			}
+			cur->link[idx] = elem;
+			elem->parent = cur;
 		}
-		else
-			insert(elem, root->link[idx]);
-		unsigned int maxIdx = height(root->link[0]) > height(root->link[1]) ? 0 : 1;
-		root->height = height(root->link[maxIdx]) + 1;
 	}
 
 }

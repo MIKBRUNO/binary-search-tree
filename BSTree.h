@@ -7,11 +7,12 @@ namespace BinSearchTree {
 	public:
 		class iterator;
 
-		BSTree(int);
+		BSTree() : root(nullptr) {};
 		~BSTree();
 		iterator begin();
 		iterator end();
 		void insert(int);
+		inline bool IsEmpty() { return nullptr == root; }
 
 		class Node {
 		public:
@@ -29,23 +30,36 @@ namespace BinSearchTree {
 		class iterator {
 		public:
 			iterator(BSTree&);
-			~iterator();
 			iterator operator++(int);
-			iterator operator--(int);
-			int operator*();
-			bool operator==(iterator);
-			bool operator!=(iterator);
+			inline int operator*();
+			inline bool operator==(iterator other) { return this->current == other.current; }
+			inline bool operator!=(iterator other) { return !(*this == other); }
 		private:
 			friend class BSTree;
-			Node* cur;
-			Node* deepLeft(Node*);
-			Node* deepRight(Node*);
+			Node* current;
+			inline Node* deepLeft(Node*);
+			inline Node* deepRight(Node*);
 		};
 
 	private:
 		Node* root;
-		unsigned int height(Node*);
-		void insert(Node*, Node*);
 	};
 
+	inline int BSTree::iterator::operator*() {
+		if (nullptr == current)
+			throw "Cannot get value by this iterator.";
+		return this->current->value;
+	}
+	inline BSTree::Node* BSTree::iterator::deepLeft(BSTree::Node* from) {
+		while (nullptr != from->link[0]) {
+			from = from->link[0];
+		}
+		return from;
+	}
+	inline BSTree::Node* BSTree::iterator::deepRight(BSTree::Node* from) {
+		while (nullptr != from->link[1]) {
+			from = from->link[1];
+		}
+		return from;
+	}
 }
