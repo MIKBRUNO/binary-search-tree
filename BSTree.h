@@ -1,5 +1,7 @@
 #pragma once
-#include <stack>
+#include <memory>
+
+using std::shared_ptr;
 
 namespace BinSearchTree {
 
@@ -7,7 +9,7 @@ namespace BinSearchTree {
 	public:
 		class iterator;
 
-		BSTree() : root(nullptr), afterEnd(nullptr) {};
+		BSTree() : root(nullptr) {};
 		~BSTree();
 		iterator begin();
 		iterator end();
@@ -22,8 +24,8 @@ namespace BinSearchTree {
 		private:
 			friend class iterator;
 			friend class BSTree;
-			Node* link[2];
-			Node* parent;
+			shared_ptr<Node> link[2];
+			shared_ptr<Node> parent;
 		};
 
 		class iterator {
@@ -31,19 +33,20 @@ namespace BinSearchTree {
 			iterator(BSTree&);
 			iterator operator++(int);
 			iterator operator--(int);
+			iterator& operator++();
+			iterator& operator--();
 			inline int operator*();
 			inline bool operator==(iterator other) { return this->current == other.current; }
 			inline bool operator!=(iterator other) { return !(*this == other); }
 		private:
 			friend class BSTree;
-			Node* current;
-			inline Node* deepLeft(Node*);
-			inline Node* deepRight(Node*);
+			shared_ptr<Node> current;
+			static shared_ptr<Node> deepLeft(shared_ptr<Node>);
+			static shared_ptr<Node> deepRight(shared_ptr<Node>);
 		};
 
 	private:
-		Node* root;
-		Node* afterEnd;
+		shared_ptr<Node> root;
 	};
 
 	inline int BSTree::iterator::operator*() {
@@ -51,13 +54,13 @@ namespace BinSearchTree {
 			throw "Cannot get value by this iterator.";
 		return this->current->value;
 	}
-	inline BSTree::Node* BSTree::iterator::deepLeft(BSTree::Node* from) {
+	inline shared_ptr<BSTree::Node> BSTree::iterator::deepLeft(shared_ptr<BSTree::Node> from) {
 		while (nullptr != from->link[0]) {
 			from = from->link[0];
 		}
 		return from;
 	}
-	inline BSTree::Node* BSTree::iterator::deepRight(BSTree::Node* from) {
+	inline shared_ptr<BSTree::Node> BSTree::iterator::deepRight(shared_ptr<BSTree::Node> from) {
 		while (nullptr != from->link[1]) {
 			from = from->link[1];
 		}

@@ -1,20 +1,21 @@
 #include "BSTree.h"
-#include <stack>
+
+using std::shared_ptr;
+using std::make_shared;
 
 namespace BinSearchTree {
 
 	BSTree::iterator::iterator(BSTree& tree) {
 		current = tree.root;
 	}
-	BSTree::iterator BSTree::iterator::operator++(int) {
-		BSTree::iterator res = *this;
+	BSTree::iterator& BSTree::iterator::operator++() {
 		if (nullptr == current)
-			return res;
+			return *this;
 		if (nullptr != current->link[1])
 			current = deepLeft(current->link[1]);
 		else if (nullptr != current->parent) {
-			Node* previous = current;
-			Node* upper = current;
+			shared_ptr<Node> previous = current;
+			shared_ptr<Node> upper = current;
 			do {
 				previous = upper;
 				upper = upper->parent;
@@ -22,17 +23,16 @@ namespace BinSearchTree {
 			if (upper->link[1] != previous)
 				current = upper;
 		}
-		return res;
+		return *this;
 	}
-	BSTree::iterator BSTree::iterator::operator--(int) {
-		BSTree::iterator res = *this;
+	BSTree::iterator& BSTree::iterator::operator--() {
 		if (nullptr == current)
-			return res;
+			return *this;
 		if (nullptr != current->link[0])
 			current = deepRight(current->link[0]);
 		else if (nullptr != current->parent) {
-			Node* previous = current;
-			Node* upper = current;
+			shared_ptr<Node> previous = current;
+			shared_ptr<Node> upper = current;
 			do {
 				previous = upper;
 				upper = upper->parent;
@@ -40,6 +40,16 @@ namespace BinSearchTree {
 			if (upper->link[0] != previous)
 				current = upper;
 		}
+		return *this;
+	}
+	BSTree::iterator BSTree::iterator::operator++(int) {
+		iterator res = *this;
+		++(*this);
+		return res;
+	}
+	BSTree::iterator BSTree::iterator::operator--(int) {
+		iterator res = *this;
+		--(*this);
 		return res;
 	}
 }

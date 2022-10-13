@@ -21,12 +21,15 @@ int main() {
 	BSTree::iterator iter3 = tree.begin();
 	tree.insert(-3);
 	tree.insert(-5);
+	cout << *(--tree.end()) << std::endl;
 	tree.insert(-1);
 	tree.insert(-4);
 	tree.insert(-2);
+	cout << *(--tree.end()) << std::endl;
 	tree.insert(2);
 	tree.insert(1);
 	tree.insert(4);
+	cout << *(--tree.end()) << std::endl;
 	tree.insert(3);
 	tree.insert(5);
 	BSTree::iterator begin = tree.begin();

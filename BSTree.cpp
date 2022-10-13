@@ -2,6 +2,9 @@
 
 namespace BinSearchTree {
 
+	using std::shared_ptr;
+	using std::make_shared;
+
 	BSTree::Node::Node(int val) {
 		value = val;
 		link[0] = nullptr;
@@ -9,15 +12,13 @@ namespace BinSearchTree {
 		parent = nullptr;
 	}
 	BSTree::Node::~Node() {
-		if (nullptr != link[0])
-			delete link[0];
-		if (nullptr != link[1])
-			delete link[1];
+		link[0].reset();
+		link[1].reset();
 	}
 
 	BSTree::~BSTree() {
 		if (nullptr != root)
-			delete root;
+			root.reset();
 	}
 	BSTree::iterator BSTree::begin() {
 		iterator begin(*this);
@@ -27,21 +28,23 @@ namespace BinSearchTree {
 	}
 	BSTree::iterator BSTree::end() {
 		iterator end(*this);
-		end.current = afterEnd;
+		if (!IsEmpty())
+			end.current = end.deepRight(end.current);
 		return end;
 	}
 	void BSTree::insert(int nwValue) {
-		Node* elem = new Node(nwValue);
+		shared_ptr<Node> elem = make_shared<Node>(nwValue);
 		if (nullptr == root) {
 			root = elem;
-			afterEnd = new Node(0);
-			afterEnd->parent = root;
-			root->link[1] = afterEnd;
+			shared_ptr<Node> after_end = make_shared<Node>(666);
+			after_end->parent = root;
+			root->link[1] = after_end;
 		}
 		else {
-			afterEnd->parent->link[1] = nullptr;
+			shared_ptr<Node> after_end = iterator::deepRight(root);
+			after_end->parent->link[1] = nullptr;
 
-			Node* cur = root;
+			shared_ptr<Node> cur = root;
 			unsigned int idx = (elem->value >= cur->value);
 			while (nullptr != cur->link[idx]) {
 				cur = cur->link[idx];
@@ -50,13 +53,17 @@ namespace BinSearchTree {
 			cur->link[idx] = elem;
 			elem->parent = cur;
 
-			Node* nwEnd = afterEnd->parent->link[1];
+			shared_ptr<Node> nwEnd = after_end->parent->link[1];
+			shared_ptr<Node> oldEnd = after_end->parent;
+			after_end = make_shared<Node>(666);
 			if (nullptr != nwEnd) {
-				nwEnd->link[1] = afterEnd;
-				afterEnd->parent = nwEnd;
+				nwEnd->link[1] = after_end;
+				after_end->parent = nwEnd;
 			}
-			else
-				afterEnd->parent->link[1] = afterEnd;
+			else {
+				oldEnd->link[1] = after_end;
+				after_end->parent = oldEnd;
+			}
 		}
 	}
 
