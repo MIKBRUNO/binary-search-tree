@@ -7,8 +7,6 @@ namespace BinSearchTree {
 		link[0] = nullptr;
 		link[1] = nullptr;
 		parent = nullptr;
-		height = 1;
-
 	}
 	BSTree::Node::~Node() {
 		if (nullptr != link[0])
@@ -22,18 +20,27 @@ namespace BinSearchTree {
 			delete root;
 	}
 	BSTree::iterator BSTree::begin() {
-		return iterator(*this);
+		iterator begin(*this);
+		if (!IsEmpty())
+			begin.current = begin.deepLeft(begin.current);
+		return begin;
 	}
 	BSTree::iterator BSTree::end() {
 		iterator end(*this);
-		end.current = nullptr;
+		end.current = afterEnd;
 		return end;
 	}
 	void BSTree::insert(int nwValue) {
 		Node* elem = new Node(nwValue);
-		if (nullptr == root)
+		if (nullptr == root) {
 			root = elem;
+			afterEnd = new Node(0);
+			afterEnd->parent = root;
+			root->link[1] = afterEnd;
+		}
 		else {
+			afterEnd->parent->link[1] = nullptr;
+
 			Node* cur = root;
 			unsigned int idx = (elem->value >= cur->value);
 			while (nullptr != cur->link[idx]) {
@@ -42,6 +49,14 @@ namespace BinSearchTree {
 			}
 			cur->link[idx] = elem;
 			elem->parent = cur;
+
+			Node* nwEnd = afterEnd->parent->link[1];
+			if (nullptr != nwEnd) {
+				nwEnd->link[1] = afterEnd;
+				afterEnd->parent = nwEnd;
+			}
+			else
+				afterEnd->parent->link[1] = afterEnd;
 		}
 	}
 

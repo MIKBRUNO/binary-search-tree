@@ -7,7 +7,7 @@ namespace BinSearchTree {
 	public:
 		class iterator;
 
-		BSTree() : root(nullptr) {};
+		BSTree() : root(nullptr), afterEnd(nullptr) {};
 		~BSTree();
 		iterator begin();
 		iterator end();
@@ -24,13 +24,13 @@ namespace BinSearchTree {
 			friend class BSTree;
 			Node* link[2];
 			Node* parent;
-			unsigned int height;
 		};
 
 		class iterator {
 		public:
 			iterator(BSTree&);
 			iterator operator++(int);
+			iterator operator--(int);
 			inline int operator*();
 			inline bool operator==(iterator other) { return this->current == other.current; }
 			inline bool operator!=(iterator other) { return !(*this == other); }
@@ -43,6 +43,7 @@ namespace BinSearchTree {
 
 	private:
 		Node* root;
+		Node* afterEnd;
 	};
 
 	inline int BSTree::iterator::operator*() {
