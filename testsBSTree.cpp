@@ -16,9 +16,19 @@ using std::cout;
 using BinSearchTree::BSTree;
 
 int main() {
+	{
+		BSTree tree;
+	}
+
 	BSTree tree;
+	auto null_iter = tree.begin();
+	null_iter = tree.end();
+	++null_iter;
+	--null_iter;
 	tree.insert(0);
 	BSTree::iterator iter3 = tree.begin();
+	++iter3;
+	--iter3;
 	tree.insert(-3);
 	tree.insert(-5);
 	cout << *(--tree.end()) << std::endl;

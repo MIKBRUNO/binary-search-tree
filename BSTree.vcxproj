@@ -141,7 +141,7 @@
   <ItemGroup>
     <ClCompile Include="BSTree.cpp" />
     <ClCompile Include="Iterators.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="testsBSTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BSTree.h" />
