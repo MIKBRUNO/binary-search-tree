@@ -1,8 +1,5 @@
 #include "BSTree.h"
 
-using std::shared_ptr;
-using std::make_shared;
-
 namespace BinSearchTree {
 
 	BSTree::iterator::iterator(BSTree& tree) {
@@ -14,8 +11,8 @@ namespace BinSearchTree {
 		if (nullptr != current->link[1])
 			current = deepLeft(current->link[1]);
 		else if (nullptr != current->parent) {
-			shared_ptr<Node> previous = current;
-			shared_ptr<Node> upper = current;
+			Node* previous = current;
+			Node* upper = current;
 			do {
 				previous = upper;
 				upper = upper->parent;
@@ -31,8 +28,8 @@ namespace BinSearchTree {
 		if (nullptr != current->link[0])
 			current = deepRight(current->link[0]);
 		else if (nullptr != current->parent) {
-			shared_ptr<Node> previous = current;
-			shared_ptr<Node> upper = current;
+			Node* previous = current;
+			Node* upper = current;
 			do {
 				previous = upper;
 				upper = upper->parent;

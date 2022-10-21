@@ -2,8 +2,6 @@
 #include <memory>
 #include <stdexcept>
 
-using std::shared_ptr;
-
 namespace BinSearchTree {
 
 	class BSTree {
@@ -25,8 +23,8 @@ namespace BinSearchTree {
 		private:
 			friend class iterator;
 			friend class BSTree;
-			shared_ptr<Node> link[2];
-			shared_ptr<Node> parent;
+			Node* link[2];
+			Node* parent;
 		};
 
 		class iterator {
@@ -41,13 +39,13 @@ namespace BinSearchTree {
 			inline bool operator!=(iterator other) { return !(*this == other); }
 		private:
 			friend class BSTree;
-			shared_ptr<Node> current;
-			static shared_ptr<Node> deepLeft(shared_ptr<Node>);
-			static shared_ptr<Node> deepRight(shared_ptr<Node>);
+			Node* current;
+			static Node* deepLeft(Node*);
+			static Node* deepRight(Node*);
 		};
 
 	private:
-		shared_ptr<Node> root;
+		Node* root;
 	};
 
 	inline int BSTree::iterator::operator*() {
@@ -55,13 +53,13 @@ namespace BinSearchTree {
 			throw std::logic_error("Cannot get value by this iterator.");
 		return this->current->value;
 	}
-	inline shared_ptr<BSTree::Node> BSTree::iterator::deepLeft(shared_ptr<BSTree::Node> from) {
+	inline BSTree::Node* BSTree::iterator::deepLeft(BSTree::Node* from) {
 		while (nullptr != from->link[0]) {
 			from = from->link[0];
 		}
 		return from;
 	}
-	inline shared_ptr<BSTree::Node> BSTree::iterator::deepRight(shared_ptr<BSTree::Node> from) {
+	inline BSTree::Node* BSTree::iterator::deepRight(BSTree::Node* from) {
 		while (nullptr != from->link[1]) {
 			from = from->link[1];
 		}
