@@ -25,6 +25,12 @@ int main() {
 	null_iter = tree.end();
 	++null_iter;
 	--null_iter;
+	try {
+		*null_iter;
+	}
+	catch (const std::logic_error& e) {
+		std::cerr << e.what() << std::endl;
+	}
 	tree.insert(0);
 	BSTree::iterator iter3 = tree.begin();
 	++iter3;

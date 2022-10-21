@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <stdexcept>
 
 using std::shared_ptr;
 
@@ -51,7 +52,7 @@ namespace BinSearchTree {
 
 	inline int BSTree::iterator::operator*() {
 		if (nullptr == current)
-			throw "Cannot get value by this iterator.";
+			throw std::logic_error("Cannot get value by this iterator.");
 		return this->current->value;
 	}
 	inline shared_ptr<BSTree::Node> BSTree::iterator::deepLeft(shared_ptr<BSTree::Node> from) {
