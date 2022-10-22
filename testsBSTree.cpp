@@ -33,6 +33,7 @@ int main() {
 	}
 	tree.insert(0);
 	BSTree::iterator iter3 = tree.begin();
+	BSTree::iterator bad_end = tree.end();
 	++iter3;
 	--iter3;
 	tree.insert(-3);
@@ -43,6 +44,7 @@ int main() {
 	tree.insert(-2);
 	cout << *(--tree.end()) << std::endl;
 	tree.insert(2);
+	cout << *(bad_end) << std::endl;
 	tree.insert(1);
 	tree.insert(4);
 	cout << *(--tree.end()) << std::endl;

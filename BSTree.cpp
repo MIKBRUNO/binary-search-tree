@@ -2,9 +2,6 @@
 
 namespace BinSearchTree {
 
-	using std::shared_ptr;
-	using std::make_shared;
-
 	BSTree::Node::Node(int val) {
 		value = val;
 		link[0] = nullptr;
@@ -12,13 +9,12 @@ namespace BinSearchTree {
 		parent = nullptr;
 	}
 	BSTree::Node::~Node() {
-		link[0].reset();
-		link[1].reset();
+		delete link[0];
+		delete link[1];
 	}
 
 	BSTree::~BSTree() {
-		if (nullptr != root)
-			root.reset();
+		delete root;
 	}
 	BSTree::iterator BSTree::begin() {
 		iterator begin(*this);
@@ -33,18 +29,18 @@ namespace BinSearchTree {
 		return end;
 	}
 	void BSTree::insert(int nwValue) {
-		shared_ptr<Node> elem = make_shared<Node>(nwValue);
+		Node* elem = new Node(nwValue);
 		if (nullptr == root) {
 			root = elem;
-			shared_ptr<Node> after_end = make_shared<Node>(666);
+			Node* after_end = new Node(666);
 			after_end->parent = root;
 			root->link[1] = after_end;
 		}
 		else {
-			shared_ptr<Node> after_end = iterator::deepRight(root);
+			Node* after_end = iterator::deepRight(root);
 			after_end->parent->link[1] = nullptr;
 
-			shared_ptr<Node> cur = root;
+			Node* cur = root;
 			unsigned int idx = (elem->value >= cur->value);
 			while (nullptr != cur->link[idx]) {
 				cur = cur->link[idx];
@@ -53,9 +49,10 @@ namespace BinSearchTree {
 			cur->link[idx] = elem;
 			elem->parent = cur;
 
-			shared_ptr<Node> nwEnd = after_end->parent->link[1];
-			shared_ptr<Node> oldEnd = after_end->parent;
-			after_end = make_shared<Node>(666);
+			Node* nwEnd = after_end->parent->link[1];
+			Node* oldEnd = after_end->parent;
+			delete after_end;
+			after_end = new Node(666);
 			if (nullptr != nwEnd) {
 				nwEnd->link[1] = after_end;
 				after_end->parent = nwEnd;
