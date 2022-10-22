@@ -14,8 +14,7 @@ namespace BinSearchTree {
 	}
 
 	BSTree::~BSTree() {
-		if (nullptr != root)
-			delete root;
+		delete root;
 	}
 	BSTree::iterator BSTree::begin() {
 		iterator begin(*this);

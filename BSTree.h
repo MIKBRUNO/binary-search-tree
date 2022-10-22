@@ -38,10 +38,10 @@ namespace BinSearchTree {
 			inline bool operator==(iterator other) { return this->current == other.current; }
 			inline bool operator!=(iterator other) { return !(*this == other); }
 		private:
-			friend class BSTree;
 			Node* current;
 			static Node* deepLeft(Node*);
 			static Node* deepRight(Node*);
+			friend class BSTree;
 		};
 
 	private:
