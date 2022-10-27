@@ -367,3 +367,7 @@ gcov/
 
 # cmake build
 build/
+
+# VS Code 
+
+.vscode/
