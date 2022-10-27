@@ -363,4 +363,11 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # gcov folder
-gcov/*
+gcov/
+
+# cmake build
+build/
+
+# VS Code 
+
+.vscode/
