@@ -51,7 +51,7 @@ TEST(TestBSTree, BeginEndTest) {
 	ASSERT_EQ(*tree.begin(), -5);
 	ASSERT_EQ(*(--tree.end()), 0);
 	tree.insert(2);
-	*(bad_end); 							// indefined value by invalid iterator
+	*(bad_end); 							// undefined value by invalid iterator
 	ASSERT_EQ(*tree.begin(), -5);
 	ASSERT_EQ(*(--tree.end()), 2);
 	tree.insert(1);

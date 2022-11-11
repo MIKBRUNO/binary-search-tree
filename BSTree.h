@@ -29,7 +29,7 @@ namespace BinSearchTree {
 
 		class iterator {
 		public:
-			iterator(BSTree&);
+			explicit iterator(BSTree&);
 			iterator operator++(int);
 			iterator operator--(int);
 			iterator& operator++();
