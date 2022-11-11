@@ -29,13 +29,16 @@ TEST(TestBSTree, BeginEndTest) {
 	tree.insert(0);
 	BSTree::iterator iter3 = tree.begin();
 	ASSERT_EQ(*iter3, 0);
-	BSTree::iterator bad_end = tree.end();
-	ASSERT_EQ(*bad_end, 666);
+	BSTree::iterator end = tree.end();
+	ASSERT_THROW(*end, std::logic_error);
 	++iter3;
-	ASSERT_TRUE(iter3 == bad_end);
-	--iter3;
+	ASSERT_TRUE(iter3 == end);
+	--iter3;	// return from after_end
+	ASSERT_EQ(*iter3, 0);
+	--iter3;	// tries to -- from only Node
 	ASSERT_EQ(*iter3, 0);
 	tree.insert(-3);
+	ASSERT_EQ(*(--(tree.begin())), -3);
 	ASSERT_EQ(*tree.begin(), -3);
 	ASSERT_EQ(*(--tree.end()), 0);
 	tree.insert(-5);
@@ -51,7 +54,9 @@ TEST(TestBSTree, BeginEndTest) {
 	ASSERT_EQ(*tree.begin(), -5);
 	ASSERT_EQ(*(--tree.end()), 0);
 	tree.insert(2);
-	*(bad_end); 							// undefined value by invalid iterator
+
+	ASSERT_EQ(*(--end), 0);
+	
 	ASSERT_EQ(*tree.begin(), -5);
 	ASSERT_EQ(*(--tree.end()), 2);
 	tree.insert(1);

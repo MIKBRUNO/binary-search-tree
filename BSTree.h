@@ -35,10 +35,13 @@ namespace BinSearchTree {
 			iterator& operator++();
 			iterator& operator--();
 			inline int operator*();
-			inline bool operator==(iterator other) { return this->current == other.current; }
+			inline bool operator==(iterator other) {
+				return (this->isAfterEnd == other.isAfterEnd) && (this->current == other.current);
+			}
 			inline bool operator!=(iterator other) { return !(*this == other); }
 		private:
 			Node* current;
+			bool isAfterEnd;
 			static Node* deepLeft(Node*);
 			static Node* deepRight(Node*);
 			friend class BSTree;
@@ -49,7 +52,7 @@ namespace BinSearchTree {
 	};
 
 	inline int BSTree::iterator::operator*() {
-		if (nullptr == current)
+		if (isAfterEnd)
 			throw std::logic_error("Cannot get value by this iterator.");
 		return this->current->value;
 	}

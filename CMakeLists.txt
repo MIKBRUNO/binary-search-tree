@@ -24,7 +24,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_custom_command(
         TARGET coverage
         COMMAND echo "=================== COVERAGE ===================="
-        COMMAND lcov -t "${EXEC_NAME}" -o ${EXEC_NAME}.info -c -d ${OBJECT_DIR} --rc lcov_branch_coverage=1
+        COMMAND lcov -t "${EXEC_NAME}" -o ${EXEC_NAME}.info -b ${PROJECT_SOURCE_DIR} --no-external -c -d ${OBJECT_DIR} --rc lcov_branch_coverage=1
         COMMAND genhtml -o report ${EXEC_NAME}.info --rc lcov_branch_coverage=1;
         COMMAND echo "-- Coverage files have been output to ${CMAKE_BINARY_DIR}/coverage"
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/coverage

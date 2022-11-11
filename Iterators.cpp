@@ -4,9 +4,10 @@ namespace BinSearchTree {
 
 	BSTree::iterator::iterator(BSTree& tree) {
 		current = tree.root;
+		isAfterEnd = (nullptr == current);
 	}
 	BSTree::iterator& BSTree::iterator::operator++() {
-		if (nullptr == current)
+		if (isAfterEnd)
 			return *this;
 		if (nullptr != current->link[1])
 			current = deepLeft(current->link[1]);
@@ -19,10 +20,18 @@ namespace BinSearchTree {
 			} while (nullptr != upper->parent && upper->link[1] == previous);
 			if (upper->link[1] != previous)
 				current = upper;
+			else
+				isAfterEnd = true;
 		}
+		else
+			isAfterEnd = true;
 		return *this;
 	}
 	BSTree::iterator& BSTree::iterator::operator--() {
+		if (isAfterEnd && (nullptr != current)) {
+			isAfterEnd = false;
+			return *this;
+		}
 		if (nullptr == current)
 			return *this;
 		if (nullptr != current->link[0])
